@@ -1,0 +1,77 @@
+﻿@model SchoolManagement.Models.Teacher
+
+@{
+    ViewData["Title"] = "Edit Teacher";
+}
+
+<h2>Edit Teacher</h2>
+
+<form asp-action="Edit" enctype="multipart/form-data">
+    <input type="hidden" asp-for="Id" />
+    <div class="form-group">
+        <label asp-for="Name" class="control-label"></label>
+        <input asp-for="Name" class="form-control" />
+        <span asp-validation-for="Name" class="text-danger"></span>
+    </div>
+    <div class="form-group">
+        <label asp-for="Age" class="control-label"></label>
+        <input asp-for="Age" class="form-control" />
+        <span asp-validation-for="Age" class="text-danger"></span>
+    </div>
+    <div class="form-group">
+        <label asp-for="Sex" class="control-label"></label>
+        <div>
+            <input type="radio" asp-for="Sex" value="Male" id="Male" />
+            <label for="Male">Male</label>
+        </div>
+        <div>
+            <input type="radio" asp-for="Sex" value="Female" id="Female" />
+            <label for="Female">Female</label>
+        </div>
+        <div>
+            <input type="radio" asp-for="Sex" value="Other" id="Other" />
+            <label for="Other">Other</label>
+        </div>
+        <span asp-validation-for="Sex" class="text-danger"></span>
+    </div>
+    <div class="form-group">
+        <label asp-for="ImageFile" class="control-label"></label>
+        @if (!string.IsNullOrEmpty(Model.ImagePath))
+
+        {
+            <div>
+                <img id="currentImagePreview" src="@Url.Content("~/uploads/" + Model.ImagePath)" alt="Current Image" style="max-width: 200px; margin-top: 10px;" />
+                <p>Current Image</p>
+            </div>
+        }
+
+        <input asp-for="ImageFile" class="form-control-file" id="imageInput" />
+        <span asp-validation-for="ImageFile" class="text-danger"></span>
+
+       
+    </div>
+    <div class="form-group">
+        <input type="submit" value="Update" class="btn btn-primary" />
+    </div>
+</form>
+
+<div>
+    <a asp-action="Index">Back to List</a>
+</div>
+
+@section Scripts {
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
+}
+<script>
+    document.getElementById("imageInput").addEventListener("change", function (event) {
+        var reader = new FileReader();
+        reader.onload = function (e) {
+            var imgElement = document.getElementById("imagePreview");
+            imgElement.src = e.target.result;
+            imgElement.style.display = "block"; // Display the image
+        };
+        reader.readAsDataURL(event.target.files[0]);
+    });
+</script>
